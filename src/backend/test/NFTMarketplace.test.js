@@ -81,4 +81,38 @@ describe("NFTMarketplace", async function () {
         });
 
     });
+    describe("Purchasing marketplace items", function () {
+        let price = 2
+        this.beforeEach(async function () {
+            await nft.connect(addr1).mint(URI)
+            await nft.connect(addr1).setApprovalForAll(marketplace.address, true)
+            await marketplace.connect(addr1).makeItem(nft.address, 1, toWei(2))
+        })
+        it("Should update item as sold, pay seller, transfer NFT to buyer, charge fees and emit a bought event", async function () {
+            const sellerInitalEthBal = await addr1.getBalance()
+            const feeAccountInitialEthBal = await deployer.getBalance()
+            let totalPriceInWei = await marketplace.getTotalPrice(1);
+            await expect(marketplace.connect(addr2).purchaseItem(1, { value: totalPriceInWei }))
+                .to.emit(marketplace, "Bought")
+                .withArgs(
+                    1,
+                    nft.address,
+                    1,
+                    toWei(price),
+                    addr1.address,
+                    addr2.address
+                )
+            const sellerFinalEthBal = await addr1.getBalance()
+            const feeAccountFinalEthBal = await deployer.getBalance()
+
+            expect(+fromWei(sellerFinalEthBal)).to.equal(+price + +fromWei(sellerInitalEthBal))
+
+            const fee = (feePercent / 100) * price
+
+            expect(await nft.ownerOf(1)).to.equal(addr2.address);
+
+            expect((await marketplace.items(1)).sold).to.equal(true)
+        })
+    })
+
 })
