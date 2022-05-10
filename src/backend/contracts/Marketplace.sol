@@ -25,7 +25,7 @@ contract Marketplace is ReentrancyGuard {
         address indexed nft,
         uint256 tokenId,
         uint256 price,
-        address payable seller
+        address indexed seller
     );
 
     mapping(uint256 => Item) public items;
@@ -53,6 +53,6 @@ contract Marketplace is ReentrancyGuard {
             false
         );
 
-        emit Offered(itemCount, address(_nft, _tokenId, _price, msg.sender);
+        emit Offered(itemCount, address(_nft), _tokenId, _price, msg.sender);
     }
 }
