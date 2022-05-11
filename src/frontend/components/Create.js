@@ -12,6 +12,7 @@ const Create = ({ marketplace, nft }) => {
     const uploadToIPFS = async (event) => {
         event.preventDefault()
         const file = event.target.files[0]
+        console.log("file: ", file)
         if (typeof file !== 'undefined') {
             try {
                 const result = await client.add(file)
