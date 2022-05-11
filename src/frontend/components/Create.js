@@ -9,6 +9,7 @@ const Create = ({ marketplace, nft }) => {
     const [price, setPrice] = useState(null)
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
+    const [genre, setGenre] = useState('')
     const uploadToIPFS = async (event) => {
         event.preventDefault()
         const file = event.target.files[0]
@@ -24,9 +25,9 @@ const Create = ({ marketplace, nft }) => {
         }
     }
     const createNFT = async () => {
-        if (!image || !price || !name || !description) return
+        if (!image || !price || !name || !description || !genre) return
         try {
-            const result = await client.add(JSON.stringify({ image, price, name, description }))
+            const result = await client.add(JSON.stringify({ image, price, name, description, genre }))
             mintThenList(result)
         } catch (error) {
             console.log("ipfs uri upload error: ", error)
@@ -59,6 +60,14 @@ const Create = ({ marketplace, nft }) => {
                             <Form.Control onChange={(e) => setName(e.target.value)} size="lg" required type="text" placeholder="Name" />
                             <Form.Control onChange={(e) => setDescription(e.target.value)} size="lg" required as="textarea" placeholder="Description" />
                             <Form.Control onChange={(e) => setPrice(e.target.value)} size="lg" required type="number" placeholder="Price in ETH" />
+                            <Form.Control onChange={(e) => setGenre(e.target.value)} size="lg" required type="text" placeholder="Genre" list='genre_list' />
+                            <datalist id='genre_list'>
+                                <option>Drama</option>
+                                <option>Humor</option>
+                                <option>Poetry</option>
+                                <option>Bio</option>
+                                <option>Fiction</option>
+                            </datalist>
                             <div className="d-grid px-0">
                                 <Button onClick={createNFT} variant="primary" size="lg">
                                     Create & List NFT!

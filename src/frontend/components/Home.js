@@ -1,6 +1,20 @@
 import { useState, useEffect } from 'react'
 import { ethers } from "ethers"
 import { Row, Col, Card, Button } from 'react-bootstrap'
+import poetry from './genres_images/poetry.png'
+import humor from './genres_images/humor.png'
+import drama from './genres_images/drama.png'
+import bio from './genres_images/bio.png'
+import fiction from './genres_images/fiction.png'
+
+const genre_image = {
+    "Drama": drama,
+    "Humor": humor,
+    "Poetry": poetry,
+    "bio": bio,
+    "fiction": fiction
+}
+
 
 const Home = ({ marketplace, nft }) => {
     const [loading, setLoading] = useState(true)
@@ -19,6 +33,7 @@ const Home = ({ marketplace, nft }) => {
                 const metadata = await response.json()
                 // get total price of item (item price + fee)
                 const totalPrice = await marketplace.getTotalPrice(item.itemId)
+                console.log("metadata: ", metadata)
                 // Add item to items array
                 items.push({
                     totalPrice,
@@ -26,8 +41,12 @@ const Home = ({ marketplace, nft }) => {
                     seller: item.seller,
                     name: metadata.name,
                     description: metadata.description,
-                    image: metadata.image
+                    // image: metadata.image
+                    image: genre_image[metadata.genre],
+                    data_link: metadata.image
                 })
+                console.log("items ", items)
+                console.log("original items ", metadata.image)
             }
         }
         setLoading(false)
@@ -69,6 +88,13 @@ const Home = ({ marketplace, nft }) => {
                       </Button>
                                         </div>
                                     </Card.Footer>
+                                    <button
+                                        type="button"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            window.open(item.data_link, "_blank");
+                                        }}
+                                    > View Content</button>
                                 </Card>
                             </Col>
                         ))}

@@ -1,6 +1,15 @@
 import { useState, useEffect } from 'react'
 import { ethers } from "ethers"
 import { Row, Col, Card } from 'react-bootstrap'
+import poetry from './genres_images/poetry.png'
+import humor from './genres_images/humor.png'
+import drama from './genres_images/drama.png'
+
+const genre_image = {
+    "Drama": drama,
+    "Humor": humor,
+    "Poetry": poetry
+}
 
 export default function MyPurchases({ marketplace, nft, account }) {
     const [loading, setLoading] = useState(true)
@@ -27,7 +36,8 @@ export default function MyPurchases({ marketplace, nft, account }) {
                 itemId: i.itemId,
                 name: metadata.name,
                 description: metadata.description,
-                image: metadata.image
+                image: genre_image[metadata.genre],
+                data_link: metadata.image
             }
             return purchasedItem
         }))
@@ -51,6 +61,19 @@ export default function MyPurchases({ marketplace, nft, account }) {
                             <Col key={idx} className="overflow-hidden">
                                 <Card>
                                     <Card.Img variant="top" src={item.image} />
+                                    <Card.Body color="secondary">
+                                        <Card.Title>{item.name}</Card.Title>
+                                        <Card.Text>
+                                            {item.description}
+                                        </Card.Text>
+                                    </Card.Body>
+                                    <button
+                                        type="button"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            window.open(item.data_link, "_blank");
+                                        }}
+                                    > View Content</button>
                                     <Card.Footer>{ethers.utils.formatEther(item.totalPrice)} ETH</Card.Footer>
                                 </Card>
                             </Col>
