@@ -83,6 +83,7 @@ describe("NFTMarketplace", async function () {
     });
     describe("Purchasing marketplace items", function () {
         let price = 2
+        let totalPriceInWei
         this.beforeEach(async function () {
             await nft.connect(addr1).mint(URI)
             await nft.connect(addr1).setApprovalForAll(marketplace.address, true)
@@ -91,7 +92,7 @@ describe("NFTMarketplace", async function () {
         it("Should update item as sold, pay seller, transfer NFT to buyer, charge fees and emit a bought event", async function () {
             const sellerInitalEthBal = await addr1.getBalance()
             const feeAccountInitialEthBal = await deployer.getBalance()
-            let totalPriceInWei = await marketplace.getTotalPrice(1);
+            totalPriceInWei = await marketplace.getTotalPrice(1);
             await expect(marketplace.connect(addr2).purchaseItem(1, { value: totalPriceInWei }))
                 .to.emit(marketplace, "Bought")
                 .withArgs(
@@ -113,6 +114,23 @@ describe("NFTMarketplace", async function () {
 
             expect((await marketplace.items(1)).sold).to.equal(true)
         })
+        it("should fail for ivalid item ids, sold items and when not ether is paid", async function () {
+            await expect(
+                marketplace.connect(addr2).purchaseItem(2, { value: totalPriceInWei })
+            ).to.be.revertedWith("item doesn't exist");
+            await expect(
+                marketplace.connect(addr2).purchaseItem(0, { value: totalPriceInWei })
+            ).to.be.revertedWith("item doesn't exist");
+            await expect(
+                marketplace.connect(addr2).purchaseItem(1, { value: toWei(price) })
+            ).to.be.revertedWith("not enough ether to cover item price and market fee");
+
+            await marketplace.connect(addr2).purchaseItem(1, { value: totalPriceInWei })
+            await expect(
+                marketplace.connect(deployer).purchaseItem(1, { value: totalPriceInWei })
+            ).to.be.revertedWith("item already sold");
+
+        });
     })
 
 })
