@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import { ethers } from "ethers"
-import { Row, Col, Card } from 'react-bootstrap'
+import { Row, Col, Card, Button } from 'react-bootstrap'
 import poetry from './genres_images/poetry.png'
 import humor from './genres_images/humor.png'
 import drama from './genres_images/drama.png'
+
+import './graphic.css';
 
 const genre_image = {
     "Drama": drama,
@@ -49,7 +51,7 @@ export default function MyPurchases({ marketplace, nft, account }) {
     }, [])
     if (loading) return (
         <main style={{ padding: "1rem 0" }}>
-            <h2>Loading...</h2>
+            <div class="apptext">Loading...</div>
         </main>
     )
     return (
@@ -62,19 +64,23 @@ export default function MyPurchases({ marketplace, nft, account }) {
                                 <Card>
                                     <Card.Img variant="top" src={item.image} />
                                     <Card.Body color="secondary">
-                                        <Card.Title>{item.name}</Card.Title>
+                                        <Card.Title><span class="itemtitle">{item.name}</span></Card.Title>
                                         <Card.Text>
-                                            {item.description}
+                                            Description: {item.description}
                                         </Card.Text>
                                     </Card.Body>
-                                    <button
-                                        type="button"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            window.open(item.data_link, "_blank");
-                                        }}
-                                    > View Content</button>
                                     <Card.Footer>{ethers.utils.formatEther(item.totalPrice)} ETH</Card.Footer>
+                                    <Card.Footer>
+                                        <div className='d-grid'>
+                                            <Button onClick={(e) => { 
+                                                e.preventDefault();
+                                                window.open(item.data_link, "_blank");
+                                            }}
+                                            variant="outline-success"
+                                            size="lg"
+                                            > View Content</Button>
+                                        </div>
+                                    </Card.Footer>
                                 </Card>
                             </Col>
                         ))}
@@ -82,7 +88,7 @@ export default function MyPurchases({ marketplace, nft, account }) {
                 </div>
                 : (
                     <main style={{ padding: "1rem 0" }}>
-                        <h2>No purchases</h2>
+                        <div class="apptext">No purchases</div>
                     </main>
                 )}
         </div>

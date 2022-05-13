@@ -7,12 +7,14 @@ import drama from './genres_images/drama.png'
 import bio from './genres_images/bio.png'
 import fiction from './genres_images/fiction.png'
 
+import './graphic.css';
+
 const genre_image = {
     "Drama": drama,
     "Humor": humor,
     "Poetry": poetry,
-    "bio": bio,
-    "fiction": fiction
+    "Bio": bio,
+    "Fiction": fiction
 }
 
 
@@ -63,7 +65,7 @@ const Home = ({ marketplace, nft }) => {
     }, [])
     if (loading) return (
         <main style={{ padding: "1rem 0" }}>
-            <h2>Loading...</h2>
+            <div class="apptext">Loading...</div>
         </main>
     )
     return (
@@ -76,25 +78,29 @@ const Home = ({ marketplace, nft }) => {
                                 <Card>
                                     <Card.Img variant="top" src={item.image} />
                                     <Card.Body color="secondary">
-                                        <Card.Title>{item.name}</Card.Title>
+                                        <Card.Title><span class="itemtitle">{item.name}</span></Card.Title>
                                         <Card.Text>
-                                            {item.description}
+                                            Description: {item.description}
                                         </Card.Text>
                                     </Card.Body>
                                     <Card.Footer>
                                         <div className='d-grid'>
                                             <Button onClick={() => buyMarketItem(item)} variant="primary" size="lg">
                                                 Buy for {ethers.utils.formatEther(item.totalPrice)} ETH
-                      </Button>
+                                            </Button>
                                         </div>
                                     </Card.Footer>
-                                    <button
-                                        type="button"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            window.open(item.data_link, "_blank");
-                                        }}
-                                    > View Content</button>
+                                    <Card.Footer>
+                                        <div className='d-grid'>
+                                            <Button onClick={(e) => { 
+                                                e.preventDefault();
+                                                window.open(item.data_link, "_blank");
+                                            }}
+                                            variant="outline-success"
+                                            size="lg"
+                                            > View Content</Button>
+                                        </div>
+                                    </Card.Footer>
                                 </Card>
                             </Col>
                         ))}
@@ -102,7 +108,7 @@ const Home = ({ marketplace, nft }) => {
                 </div>
                 : (
                     <main style={{ padding: "1rem 0" }}>
-                        <h2>No listed assets</h2>
+                        <div class="apptext">No listed assets</div>
                     </main>
                 )}
         </div>

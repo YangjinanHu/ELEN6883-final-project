@@ -4,21 +4,23 @@ import {
 import { Navbar, Nav, Button, Container } from 'react-bootstrap'
 import literature from './literature.png'
 
+import './graphic.css';
+
 const Navigation = ({ web3Handler, account }) => {
     return (
-        <Navbar expand="lg" bg="secondary" variant="dark">
+        <Navbar expand="lg" bg="warning" variant="light">
             <Container>
-                <Navbar.Brand href="http://www.dappuniversity.com/bootcamp">
+                <Navbar.Brand href="/">
                     <img src={literature} width="40" height="40" className="" alt="" />
-                    &nbsp; Place of Mind
+                    &nbsp; <span class="navtext">Place of Mind</span>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
-                        <Nav.Link as={Link} to="/">Home</Nav.Link>
-                        <Nav.Link as={Link} to="/create">Create</Nav.Link>
-                        <Nav.Link as={Link} to="/my-listed-items">My Listed Items</Nav.Link>
-                        <Nav.Link as={Link} to="/my-purchases">My Purchases</Nav.Link>
+                        <Nav.Link as={Link} to="/"><span class="navbartext">Home</span></Nav.Link>
+                        <Nav.Link as={Link} to="/create"><span class="navbartext">Create</span></Nav.Link>
+                        <Nav.Link as={Link} to="/my-listed-items"><span class="navbartext">My Listed Items</span></Nav.Link>
+                        <Nav.Link as={Link} to="/my-purchases"><span class="navbartext">My Purchases</span></Nav.Link>
                     </Nav>
                     <Nav>
                         {account ? (
@@ -27,13 +29,13 @@ const Navigation = ({ web3Handler, account }) => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="button nav-button btn-sm mx-4">
-                                <Button variant="outline-light">
+                                <Button variant="outline-primary">
                                     {account.slice(0, 5) + '...' + account.slice(38, 42)}
                                 </Button>
 
                             </Nav.Link>
                         ) : (
-                            <Button onClick={web3Handler} variant="outline-light">Connect Wallet</Button>
+                            <Button onClick={web3Handler} variant="outline-primary">Connect Wallet</Button>
                         )}
                     </Nav>
                 </Navbar.Collapse>

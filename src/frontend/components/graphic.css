@@ -1,0 +1,20 @@
+.listtext{
+    font-size: xx-large;
+    font-family: fantasy;
+}
+.apptext{
+    font-size: xx-large;
+    font-weight: bold;
+    font-family: cursive;
+}
+.navtext{
+    font-family: cursive;
+}
+.navbartext{
+    font-family: sans-serif;
+    font-size: larger;
+}
+.itemtitle{
+    font-style: italic;
+    font-size: larger;
+}

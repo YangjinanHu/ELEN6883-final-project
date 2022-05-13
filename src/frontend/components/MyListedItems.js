@@ -7,6 +7,8 @@ import drama from './genres_images/drama.png'
 import bio from './genres_images/bio.png'
 import fiction from './genres_images/fiction.png'
 
+import './graphic.css';
+
 const genre_image = {
   "Drama": drama,
   "Humor": humor,
@@ -18,29 +20,32 @@ const genre_image = {
 function renderSoldItems(items) {
   return (
     <>
-      <h2>Sold</h2>
+      <div class="listtext">Sold</div>
       <Row xs={1} md={2} lg={4} className="g-4 py-3">
         {items.map((item, idx) => (
           <Col key={idx} className="overflow-hidden">
             <Card>
               <Card.Img variant="top" src={item.image} />
+              <Card.Body color="secondary">
+                <Card.Title><span class="itemtitle">{item.name}</span></Card.Title>
+                <Card.Text>
+                  Description: {item.description}
+                </Card.Text>
+              </Card.Body>
               <Card.Footer>
                 For {ethers.utils.formatEther(item.totalPrice)} ETH - Recieved {ethers.utils.formatEther(item.price)} ETH
               </Card.Footer>
-              <Card.Body color="secondary">
-                <Card.Title>{item.name}</Card.Title>
-                <Card.Text>
-                  {item.description}
-                </Card.Text>
-              </Card.Body>
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  window.open(item.data_link, "_blank");
-                }}
-              > View Content</button>
-
+              <Card.Footer>
+                <div className='d-grid'>
+                    <Button onClick={(e) => { 
+                        e.preventDefault();
+                        window.open(item.data_link, "_blank");
+                    }}
+                    variant="outline-success"
+                    size="lg"
+                    > View Content</Button>
+                </div>
+              </Card.Footer>
             </Card>
           </Col>
         ))}
@@ -93,33 +98,37 @@ export default function MyListedItems({ marketplace, nft, account }) {
   }, [])
   if (loading) return (
     <main style={{ padding: "1rem 0" }}>
-      <h2>Loading...</h2>
+      <div class="apptext">Loading...</div>
     </main>
   )
   return (
     <div className="flex justify-center">
       {listedItems.length > 0 ?
         <div className="px-5 py-3 container">
-          <h2>Listed</h2>
+          <div class="listtext">Listed</div>
           <Row xs={1} md={2} lg={4} className="g-4 py-3">
             {listedItems.map((item, idx) => (
               <Col key={idx} className="overflow-hidden">
                 <Card>
                   <Card.Img variant="top" src={item.image} />
                   <Card.Body color="secondary">
-                    <Card.Title>{item.name}</Card.Title>
+                    <Card.Title><span class="itemtitle">{item.name}</span></Card.Title>
                     <Card.Text>
-                      {item.description}
+                      Description: {item.description}
                     </Card.Text>
                   </Card.Body>
                   <Card.Footer>{ethers.utils.formatEther(item.totalPrice)} ETH</Card.Footer>
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      window.open(item.data_link, "_blank");
-                    }}
-                  > View Content</button>
+                  <Card.Footer>
+                    <div className='d-grid'>
+                        <Button onClick={(e) => { 
+                            e.preventDefault();
+                            window.open(item.data_link, "_blank");
+                        }}
+                        variant="outline-success"
+                        size="lg"
+                        > View Content</Button>
+                    </div>
+                  </Card.Footer>
                 </Card>
               </Col>
             ))}
@@ -128,7 +137,7 @@ export default function MyListedItems({ marketplace, nft, account }) {
         </div>
         : (
           <main style={{ padding: "1rem 0" }}>
-            <h2>No listed assets</h2>
+            <div class="apptext">No listed assets</div>
           </main>
         )
       }

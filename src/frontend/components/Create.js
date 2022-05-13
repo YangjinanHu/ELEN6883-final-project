@@ -69,7 +69,7 @@ const Create = ({ marketplace, nft }) => {
                                 <option>Fiction</option>
                             </datalist>
                             <div className="d-grid px-0">
-                                <Button onClick={createNFT} variant="primary" size="lg">
+                                <Button onClick={createNFT} variant="outline-primary" size="lg">
                                     Create & List NFT!
                 </Button>
                             </div>
